@@ -32,6 +32,14 @@ stdenv.mkDerivation rec {
     rrdtool
   ];
 
+  patches = [
+    # gcc14 broke detection of printf format specifiers
+    # building from master seems to be fixed upstream, so next release can (likely) drop the patch
+    # just keep the CFLAGS below
+    ./configure-long-long-format-gcc14.patch
+  ];
+  CFLAGS = "-Werror=format";
+
   meta = with lib; {
     description = "Multi Router Traffic Grapher";
     homepage = "https://oss.oetiker.ch/mrtg/";
